@@ -1,0 +1,14 @@
+.header-class, .search-class, .img-div-class {
+    text-align: center;
+}
+
+.img-div-class {
+    margin-top: 3rem;
+}
+
+.poke-img-class {
+    height: 35rem;
+    width: 35rem;
+}
+
+

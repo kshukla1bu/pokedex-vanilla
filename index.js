@@ -9,24 +9,60 @@ let selectedPokemon = {
     back_img: '',
 }
 
+let savedPokemon = []
+
+const divOnLoad = () => {
+    let card = document.querySelector('.card');
+    card.addEventListener( 'click', function() {
+        card.classList.toggle('is-flipped');
+    });
+}
 
 const fetchPokemon = async (pokemon) => {
     fetch('https://pokeapi.co/api/v2/pokemon/'+ pokemon, {
         method: 'GET',
     }).then(res => {
-        res.json().then(r =>{
-                selectedPokemon.name  = r.name || '',
-                selectedPokemon.baseExperience  = r.base_experience || null,
-                selectedPokemon.weight = r.weight || null
-                selectedPokemon.height = r.height || null
-                selectedPokemon.type = r.types[0].type.name
-                selectedPokemon.order = r.order || null
-                selectedPokemon.front_img = r.sprites.front_default || ''
-                selectedPokemon.back_img = r.sprites.back_default || ''
-        })
-    }).catch(e => {
-        console.log(e)
+        if(res.status===200) {
+            res.json().then(data => {
+                    selectedPokemon.name = data.name || '',
+                        selectedPokemon.baseExperience = data.base_experience || null,
+                        selectedPokemon.weight = data.weight || null
+                    selectedPokemon.height = data.height || null
+                    selectedPokemon.type = data.types[0].type.name
+                    selectedPokemon.order = data.order || null
+                    selectedPokemon.front_img = data.sprites.front_default || ''
+                    selectedPokemon.back_img = data.sprites.back_default || ''
+                renderCard()
+            })
+        } else {
+            throw "error: "+ res.status
+        }
+    }).catch((e) => {
+        document.getElementById("poke-div-id").innerHTML = "<p class='error-text-class'>Something went wrong "+e+"</p>"
     })
 }
 
+const renderCard = () => {
+    if(selectedPokemon.name)
+    {
+        document.getElementById('card-id').innerHTML =
+            "<div class='card-face front-card'>" +
+            "<img class='poke-img-class' id='poke-img' src="+ selectedPokemon.front_img + " alt='pokemon' onload="+ divOnLoad() +"/>" +
+            "<p>DESCRIPTION</p>" +
+            "<h3>" +  selectedPokemon.name.toUpperCase() + "</h3>" +
+            "<p> Type: " + selectedPokemon.type + "</p>" +
+            "<p> Weight: " + selectedPokemon.weight + "</p>" +
+            "<p> Height: "+ selectedPokemon.height +"</p>" +
+            "</div>" +
+            "<div class='card-face back-card'>" +
+            "<img class='poke-img-class' id='poke-img' src="+ selectedPokemon.back_img + " alt='pokemon'/>" +
+            "<p>DESCRIPTION</p>" +
+            "<h3>" +  selectedPokemon.name.toUpperCase() + "</h3>" +
+            "<p> Order: " + selectedPokemon.order + "</p>" +
+            "<p> Base Experience: " + selectedPokemon.baseExperience + "</p>" +
+            "</div>"
+    } else {
+        console.log("Absent ->")
+    }
+}
 console.log('selectedPokemon ->',selectedPokemon)

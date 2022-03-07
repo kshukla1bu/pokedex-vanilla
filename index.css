@@ -3,12 +3,53 @@
 }
 
 .img-div-class {
-    margin-top: 3rem;
+    width: 25rem;
+    height: 35rem;
+    perspective: 600px;
+    margin: auto;
+    margin-top: 5rem;
+    display: flex;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    position: relative;
+}
+
+.card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.front-card {
+    border: 1px solid #CCC;
+}
+
+.back-card {
+    transform: rotateY(180deg);
+    border: 1px solid #CCC;
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 25px;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .poke-img-class {
-    height: 35rem;
-    width: 35rem;
+    height: 15rem;
+    width: 15rem;
+}
+
+.error-text-class {
+    color: red;
 }
 
 

@@ -6,8 +6,7 @@
     width: 25rem;
     height: 35rem;
     perspective: 600px;
-    margin: auto;
-    margin-top: 5rem;
+    margin: 5rem auto auto;
     display: flex;
 }
 

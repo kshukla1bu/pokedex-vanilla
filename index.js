@@ -10,6 +10,8 @@ let pHeight = document.createElement("p")
 let pOrder = document.createElement("p")
 let pBaseE = document.createElement("p")
 
+
+
 let selectedPokemon = {
     name: "",
     baseExperience: null,
@@ -23,14 +25,14 @@ let selectedPokemon = {
 
 let savedPokemonList = []
 
-const renderSavedList = (pokeObj) => {
-    const divNode = document.createElement("div")
-    divNode.onclick = setPokemon(savedPokemonList.length-1)
+const renderSavedList = (pokeObj, idx) => {
+    let divNode = document.createElement("div")
+    divNode.onclick = setPokemon(idx)
     divNode.className = "item flex-item"
-    const imgNode = document.createElement("img")
+    let imgNode = document.createElement("img")
     imgNode.src = pokeObj.front_img
-    const pNode = document.createElement("p")
-    const pTextNode = document.createTextNode(pokeObj.name.toUpperCase())
+    let pNode = document.createElement("p")
+    let pTextNode = document.createTextNode(pokeObj.name.toUpperCase())
     pNode.appendChild(pTextNode)
     divNode.appendChild(imgNode)
     divNode.appendChild(pNode)
@@ -44,7 +46,7 @@ const onDexLoad = () => {
         for(let i = 0; i < length; i++)
         {
             savedPokemonList.push(JSON.parse(window.localStorage.getItem(i)))
-            renderSavedList(JSON.parse(window.localStorage.getItem(i)))
+            renderSavedList(JSON.parse(window.localStorage.getItem(i)), i)
         }
     }
 }
@@ -162,7 +164,38 @@ const savePokemon = () => {
             savedPokemonList.push(getPokeObject())
             window.localStorage.setItem("items", savedPokemonList.length)
             window.localStorage.setItem(savedPokemonList.length-1, JSON.stringify(getPokeObject()))
-            renderSavedList(getPokeObject())
+            renderSavedList(getPokeObject(), savedPokemonList.length-1)
         }
+    }
+}
+
+const sortAndRender = (option) => {
+ console.log("option", option)
+    if(savedPokemonList.length>0)
+    {
+        switch (option){
+            case "height":
+                savedPokemonList.sort((a,b) => a.height-b.height)
+                break;
+            case "weight":
+                savedPokemonList.sort((a,b) => a.weight-b.weight)
+                break;
+            case "base_exp":
+                savedPokemonList.sort((a,b) => a.baseExperience-b.baseExperience)
+                break;
+            case "order":
+                savedPokemonList.sort((a,b) => a.order-b.order)
+                break;
+            default:
+                savedPokemonList.sort()
+        }
+        console.log("Sorted by", savedPokemonList)
+        const cElement = Array.from(document.getElementsByClassName("item flex-item"))
+       cElement.forEach((x) => {
+            document.getElementById('list-id').removeChild(x)
+        })
+        savedPokemonList.forEach((y,i) => {
+            renderSavedList(y,i)
+        })
     }
 }

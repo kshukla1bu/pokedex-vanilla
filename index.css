@@ -6,7 +6,7 @@
     margin-top: 3rem;
 }
 
-.save-button {
+.save-button, .sort-drop {
     margin-top: 1rem;
 }
 
@@ -23,9 +23,7 @@
 .img-div-class {
     width: 25rem;
     height: 35rem;
-    perspective: 600px;
     margin: 5rem auto auto;
-    display: flex;
 }
 
 .card {
@@ -33,8 +31,6 @@
     height: 100%;
     transition: transform 1s;
     transform-style: preserve-3d;
-    cursor: pointer;
-    position: relative;
 }
 
 .card.is-flipped {
@@ -56,7 +52,6 @@
     height: 100%;
     text-align: center;
     font-size: 25px;
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
 

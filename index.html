@@ -23,6 +23,16 @@
     <h2>Your PokeList</h2>
     <div class="container flex" id="list-id">
     </div>
+    <div class="sort-drop" id="sort-drop-id">
+        <label for="cars">Sort By:</label>
+        <select id="cars" name="cars" onchange="sortAndRender(this.value)">
+            <option value="">None</option>
+            <option value="height">Height</option>
+            <option value="weight">Weight</option>
+            <option value="base_exp">Base Exp</option>
+            <option value="order">Order</option>
+        </select>
+    </div>
 </div>
 </body>
 </html>

@@ -23,6 +23,32 @@ let selectedPokemon = {
 
 let savedPokemonList = []
 
+const renderSavedList = (pokeObj) => {
+    const divNode = document.createElement("div")
+    divNode.onclick = setPokemon(savedPokemonList.length-1)
+    divNode.className = "item flex-item"
+    const imgNode = document.createElement("img")
+    imgNode.src = pokeObj.front_img
+    const pNode = document.createElement("p")
+    const pTextNode = document.createTextNode(pokeObj.name.toUpperCase())
+    pNode.appendChild(pTextNode)
+    divNode.appendChild(imgNode)
+    divNode.appendChild(pNode)
+    document.getElementById("list-id").appendChild(divNode)
+}
+
+const onDexLoad = () => {
+    const length = window.localStorage.getItem("items")
+    if(length > 0)
+    {
+        for(let i = 0; i < length; i++)
+        {
+            savedPokemonList.push(JSON.parse(window.localStorage.getItem(i)))
+            renderSavedList(JSON.parse(window.localStorage.getItem(i)))
+        }
+    }
+}
+
 const divOnLoad = () => {
     let card = document.querySelector(".card");
     let cardE = document.getElementById("card-id")
@@ -34,6 +60,7 @@ const divOnLoad = () => {
 }
 
 const fetchPokemon = async (pokemon) => {
+    document.getElementById("search-bar").value = ""
     fetch("https://pokeapi.co/api/v2/pokemon/"+ pokemon, {
         method: "GET",
     }).then(res => {
@@ -72,12 +99,10 @@ const renderCard = () => {
             imgBack.id = "poke-img"
             imgBack.src = selectedPokemon.back_img
             imgBack.alt = "pokemon"
-    
-            
+
             titleHeader.innerHTML = selectedPokemon.name.toUpperCase()
             titleHeader1.innerHTML = selectedPokemon.name.toUpperCase()
-    
-            
+
             pType.innerHTML = "Type: " + selectedPokemon.type
             pWeight.innerHTML = "Weight: " + selectedPokemon.weight
             pHeight.innerHTML = "Height: " + selectedPokemon.height
@@ -137,17 +162,7 @@ const savePokemon = () => {
             savedPokemonList.push(getPokeObject())
             window.localStorage.setItem("items", savedPokemonList.length)
             window.localStorage.setItem(savedPokemonList.length-1, JSON.stringify(getPokeObject()))
-            const divNode = document.createElement("div")
-            divNode.onclick = setPokemon(savedPokemonList.length-1)
-            divNode.className = "item flex-item"
-            const imgNode = document.createElement("img")
-            imgNode.src = getPokeObject().front_img
-            const pNode = document.createElement("p")
-            const pTextNode = document.createTextNode(getPokeObject().name.toUpperCase())
-            pNode.appendChild(pTextNode)
-            divNode.appendChild(imgNode)
-            divNode.appendChild(pNode)
-            document.getElementById("list-id").appendChild(divNode)
+            renderSavedList(getPokeObject())
         }
     }
 }

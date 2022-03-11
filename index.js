@@ -1,3 +1,15 @@
+let divFront = document.createElement("div")
+let divBack = document.createElement("div") 
+let imgFront = document.createElement("img")
+let imgBack =  document.createElement("img")
+let titleHeader =  document.createElement("h3")
+let titleHeader1 = document.createElement("h3")
+let pType = document.createElement("p")
+let pWeight = document.createElement("p")
+let pHeight = document.createElement("p")
+let pOrder = document.createElement("p")
+let pBaseE = document.createElement("p")
+
 let selectedPokemon = {
     name: "",
     baseExperience: null,
@@ -47,20 +59,44 @@ const fetchPokemon = async (pokemon) => {
 
 const renderCard = () => {
         if (selectedPokemon.name) {
-            document.getElementById("card-id").innerHTML =
-                "<div class=\"card-face front-card\">" +
-                "<img class= poke-img-class id=poke-img src=" + selectedPokemon.front_img + " alt=pokemon onload="+ divOnLoad()+ ">" +
-                "<h3>" + selectedPokemon.name.toUpperCase() + "</h3>" +
-                "<p> Type: " + selectedPokemon.type + "</p>" +
-                "<p> Weight: " + selectedPokemon.weight + "</p>" +
-                "<p> Height: " + selectedPokemon.height + "</p>" +
-                "</div>" +
-                "<div class=\"card-face back-card\">" +
-                "<img class=poke-img-class id=poke-img src=" + selectedPokemon.back_img + " alt=pokemon/>" +
-                "<h3>" + selectedPokemon.name.toUpperCase() + "</h3>" +
-                "<p> Order: " + selectedPokemon.order + "</p>" +
-                "<p> Base Experience: " + selectedPokemon.baseExperience + "</p>" +
-                "</div>"
+            divFront.className = "card-face front-card"
+            divBack.className = "card-face back-card"
+    
+            imgFront.className = "poke-img-class"
+            imgFront.id = "poke-img"
+            imgFront.src = selectedPokemon.front_img
+            imgFront.alt = "pokemon"
+            imgFront.onload = divOnLoad
+
+            imgBack.className = "poke-img-class"
+            imgBack.id = "poke-img"
+            imgBack.src = selectedPokemon.back_img
+            imgBack.alt = "pokemon"
+    
+            
+            titleHeader.innerHTML = selectedPokemon.name.toUpperCase()
+            titleHeader1.innerHTML = selectedPokemon.name.toUpperCase()
+    
+            
+            pType.innerHTML = "Type: " + selectedPokemon.type
+            pWeight.innerHTML = "Weight: " + selectedPokemon.weight
+            pHeight.innerHTML = "Height: " + selectedPokemon.height
+            pOrder.innerHTML = "Order: " + selectedPokemon.order
+            pBaseE.innerHTML = "Base Experience: " + selectedPokemon.baseExperience
+
+            divFront.appendChild(imgFront)
+            divFront.appendChild(titleHeader1)
+            divFront.appendChild(pType)
+            divFront.appendChild(pWeight)
+            divFront.appendChild(pHeight)
+            
+            divBack.appendChild(imgBack)
+            divBack.appendChild(titleHeader)
+            divBack.appendChild(pOrder)
+            divBack.appendChild(pBaseE)
+    
+            document.getElementById("card-id").append(divFront)
+            document.getElementById("card-id").append(divBack)
 
             document.getElementById("save-button-div-id").innerHTML = "<button onclick=\"savePokemon()\">Save</button>"
         } else {
@@ -99,6 +135,8 @@ const savePokemon = () => {
     if (getPokeObject()) {
         if (savedPokemonList.filter(x => x.name === getPokeObject().name).length === 0) {
             savedPokemonList.push(getPokeObject())
+            window.localStorage.setItem("items", savedPokemonList.length)
+            window.localStorage.setItem(savedPokemonList.length-1, JSON.stringify(getPokeObject()))
             const divNode = document.createElement("div")
             divNode.onclick = setPokemon(savedPokemonList.length-1)
             divNode.className = "item flex-item"
